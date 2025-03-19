@@ -33,6 +33,8 @@ class ScreenOnService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+
+        keepServiceAlive()
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ScreenOnService::WakeLock")
@@ -87,5 +89,11 @@ class ScreenOnService : Service() {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 //            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
+    }
+
+    private fun keepServiceAlive() {
+        val intent = Intent(this, KeepAliveActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
